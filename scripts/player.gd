@@ -18,9 +18,9 @@ var playable: bool = false
 @export
 var player_id : int
 
-const VELOCITY = 64
+const VELOCITY = 80
 var current_velocity = VELOCITY
-var sprint_multilier = 1.2
+var sprint_multilier = 1.25
 var sprint_cooldown = 5.0
 var sprint_duration = 5.0
 var sprint_timer = 0.0
