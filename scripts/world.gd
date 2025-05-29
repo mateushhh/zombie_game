@@ -1,56 +1,39 @@
 extends Node2D
-
-var udp := PacketPeerUDP.new()
-var connected := false
-var game_running := false
+var game_running := true
 
 @export 
 var player : Player
 @export 
 var PlayerScene: PackedScene
 
-
 var players := {}
 
 func _ready():
-	var args = OS.get_cmdline_args()
-	player.player_id = 0
-			
-	players[player.player_id] = player
+	player.player_id = Global.player_id
+	player.position.x = Global.x
+	player.position.y = Global.y
 	player.connect("collided_with_player", Callable(self, "_on_player_collided"))
-	var bind_result = udp.bind(0) # 0 = losowy dostępny port
-	if bind_result != OK:
-		print("Failed to bind UDP socket:", bind_result)
-		return
-	var err = udp.set_dest_address("127.0.0.1", 2137)  
-	if err == OK:
-		connected = true
-		send_message("/join")
-		print("Connected to server!")
-		set_process(true)
-	else:
-		print("Failed to connect: ", err)
-	print(players)
+	
 
 func send_message(message: String):
-	if connected:
+	if Global.connected:
 		var data = (message + "\n").to_utf8_buffer()
 		print("Sending: ", message)
-		udp.put_packet(data)
+		Global.udp.put_packet(data)
 
 func send_data_to_server():
-	if connected and player:
+	if Global.connected and player:
 		var pos_str = "P;%d;%d;%f;%f" % [player.player_id, player.current_role, player.position.x, player.position.y]
 		var data = pos_str.to_utf8_buffer()
 		print(pos_str)
-		udp.put_packet(data)
+		Global.udp.put_packet(data)
 
 func _on_player_collided(victim_id: int) -> void:
 	print("Collision detected with player:", victim_id)
 	send_collision_to_server(victim_id)
 
 func get_data_from_server():
-	var packet = udp.get_packet()
+	var packet = Global.udp.get_packet()
 	var received = packet.get_string_from_utf8()
 	received = received.split(";") 
 	print("Received from server: ", received)
@@ -92,37 +75,6 @@ func get_data_from_server():
 				new_player.connect("collided_with_player", Callable(self, "_on_player_collided"))
 				players[current_id] = new_player
 		
-	elif(type_of_data == "J"): # player joined
-		var current_id = int(received[1])
-		var current_role = int(received[2])
-		var current_x = float(received[3])
-		var current_y = float(received[4])
-		
-		if current_id == player.player_id or player.player_id == 0:
-			player.player_id = current_id
-			player.current_role = current_role
-			player.position = Vector2(current_x, current_y)
-			players[current_id] = player
-			return
-				
-		if players.has(current_id):
-			return 
-			
-		var new_player := PlayerScene.instantiate() as Player
-		new_player.current_role = current_role
-		new_player.player_id = current_id
-		new_player.position.x = current_x
-		new_player.position.y = current_y
-		add_child(new_player)
-		new_player.connect("collided_with_player", Callable(self, "_on_player_collided"))
-		players[current_id] = new_player
-	elif type_of_data == "T":  # Timer message
-		var countdown = int(received[1])
-		if countdown > 0:
-			print("Game starts in: ", countdown)
-		else:
-			print("Game started!")
-			game_running = true
 	elif type_of_data == "G":
 		game_running = false
 		print("GAME OVER!")
@@ -130,18 +82,13 @@ func get_data_from_server():
 	elif(type_of_data == "D"): #TODO player disconnect 
 		pass
 
-func _input(event):
-	if event.is_action_pressed("ui_accept"):  # Enter
-		#send_message("hello from Godot!")
-		send_data_to_server()
-
 func send_collision_to_server(target_player_id: int):
 	var msg = "C;%d;%d" % [player.player_id, target_player_id]
 	send_message(msg)
 
 func _process(delta):
-	if connected:
-		while udp.get_available_packet_count() > 0:
+	if Global.connected:
+		while Global.udp.get_available_packet_count() > 0:
 			get_data_from_server()
 		if game_running:
 			send_data_to_server() #TODO
