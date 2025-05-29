@@ -20,7 +20,7 @@ var player_id : int
 
 const VELOCITY = 80
 var current_velocity = VELOCITY
-var sprint_multilier = 1.25
+var sprint_multilier = 1.5
 var sprint_cooldown = 5.0
 var sprint_duration = 5.0
 var sprint_timer = 0.0
@@ -87,8 +87,17 @@ func handle_sprint(delta: float) -> void:
 		if sprint_timer <= 0:
 			is_sprinting = false
 			current_velocity = VELOCITY
+			sprint_timer = sprint_cooldown 
 			
 	if not is_sprinting and not can_sprint:
 		sprint_timer -= delta
 		if sprint_timer <= 0:
 			can_sprint = true
+	
+func get_sprint_progress() -> float:
+	if is_sprinting:
+		return sprint_timer / sprint_duration
+	elif not can_sprint:
+		return 1.0 - (sprint_timer / sprint_cooldown)
+	else:
+		return 1.0  #pełne naładowanie

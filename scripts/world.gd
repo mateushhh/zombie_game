@@ -6,6 +6,15 @@ var player : Player
 @export 
 var PlayerScene: PackedScene
 
+@onready var gameover_panel: Control = $UI/GameOverPanel
+@onready var gameover_label: Label = $UI/GameOverPanel/GameOverLabel
+
+@onready var players_panel: Control = $UI/PlayersPanel
+@onready var players_box: VBoxContainer = $UI/PlayersPanel/VBoxContainer
+
+@onready var sprint_bar = $UI/SprintBar
+@onready var sprint_label = $UI/SprintLabel
+
 var players := {}
 
 func _ready():
@@ -13,24 +22,28 @@ func _ready():
 	player.position.x = Global.x
 	player.position.y = Global.y
 	player.connect("collided_with_player", Callable(self, "_on_player_collided"))
-	
+	gameover_panel.hide()
+	players_panel.hide()
+	update_players_panel()
 
 func send_message(message: String):
 	if Global.connected:
 		var data = (message + "\n").to_utf8_buffer()
-		print("Sending: ", message)
 		Global.udp.put_packet(data)
 
 func send_data_to_server():
 	if Global.connected and player:
 		var pos_str = "P;%d;%d;%f;%f" % [player.player_id, player.current_role, player.position.x, player.position.y]
 		var data = pos_str.to_utf8_buffer()
-		print(pos_str)
 		Global.udp.put_packet(data)
 
 func _on_player_collided(victim_id: int) -> void:
 	print("Collision detected with player:", victim_id)
 	send_collision_to_server(victim_id)
+	
+func reset_players_ready() -> void:
+	for pid in Global.players_nicknames_by_id.keys():
+		Global.players_nicknames_by_id[pid]["ready"] = false
 
 func get_data_from_server():
 	var packet = Global.udp.get_packet()
@@ -77,16 +90,50 @@ func get_data_from_server():
 		
 	elif type_of_data == "G":
 		game_running = false
+		gameover_panel.show()
+		reset_players_ready()
+		await get_tree().create_timer(3.0).timeout 
+		
 		print("GAME OVER!")
+		get_tree().change_scene_to_file("res://scenes/lobby.tscn")
 		
 	elif(type_of_data == "D"): #TODO player disconnect 
 		pass
+		
+func update_players_panel():
+	for child in players_box.get_children():
+		players_box.remove_child(child)
+		child.queue_free()
+	
+	for id in Global.players_nicknames_by_id.keys():
+		var gracz = Global.players_nicknames_by_id[id]
+		var nick = gracz["nickname"]
+		
+		var label = Label.new()
+		label.text = "ID: %d - %s" % [id, nick]
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		players_box.add_child(label)
 
 func send_collision_to_server(target_player_id: int):
 	var msg = "C;%d;%d" % [player.player_id, target_player_id]
 	send_message(msg)
+	
+func _input(event):
+	if event is InputEventKey and event.keycode == KEY_TAB:
+		if event.pressed:
+			players_panel.show()
+		else:
+			players_panel.hide()
 
 func _process(delta):
+	if game_running:
+		var progress = player.get_sprint_progress()
+		sprint_bar.value = progress * 100.0
+		if progress >= 1.0:
+			sprint_label.text = "Sprint gotowy"
+		else:
+			sprint_label.text = ""
+		
 	if Global.connected:
 		while Global.udp.get_available_packet_count() > 0:
 			get_data_from_server()

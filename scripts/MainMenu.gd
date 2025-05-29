@@ -10,6 +10,8 @@ extends Node
 @onready var connecting_panel: Control = $ConnectingPanel
 @onready var connecting_label: Label = $ConnectingPanel/ConnectingLabel
 
+
+
 const CONNECTION_TIMEOUT := 5.0
 var connected := false
 
@@ -18,6 +20,8 @@ func _ready():
 	controls_button.pressed.connect(_on_controls_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
 	connecting_panel.hide()  # Upewnij się że panel jest ukryty na starcie
+	ip_input.text = "127.0.0.1" #tymczasowo do testow
+	nick_input.text = "gracz"
 	
 
 func _on_join_pressed():
@@ -121,6 +125,8 @@ func wait_for_connection_or_timeout(timeout_sec: float) -> bool:
 		elapsed_time += 0.5
 	
 	return false
+	
+
 
 func show_error(message: String):
 	error_label.text = message

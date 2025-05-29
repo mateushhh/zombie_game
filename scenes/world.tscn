@@ -1,8 +1,18 @@
-[gd_scene load_steps=4 format=4 uid="uid://eky1am70f5x8"]
+[gd_scene load_steps=7 format=4 uid="uid://eky1am70f5x8"]
 
 [ext_resource type="Script" uid="uid://dieb6eylekc5s" path="res://scripts/world.gd" id="1_4wyf3"]
 [ext_resource type="TileSet" uid="uid://c6c63xlmwsspc" path="res://assets/world.tres" id="2_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://cft87x1jw0ndo" path="res://scenes/player.tscn" id="2_rwgxs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4wyf3"]
+font_size = 50
+font_color = Color(1, 1, 0.0666667, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_k0juu"]
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_71j4m"]
+font_size = 30
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_4wyf3")
@@ -22,3 +32,82 @@ tile_set = ExtResource("2_4wyf3")
 position = Vector2(392, 264)
 playable = true
 player_id = 1
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="GameOverPanel" type="Panel" parent="UI"]
+visible = false
+modulate = Color(1, 1, 0.298039, 1)
+self_modulate = Color(1, 1, 0.164706, 1)
+offset_right = 1150.0
+offset_bottom = 648.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 1152.0
+offset_bottom = 641.0
+text = "KONIEC GRY"
+label_settings = SubResource("LabelSettings_4wyf3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="UI"]
+offset_left = 5.0
+offset_top = 28.0
+offset_right = 1150.0
+offset_bottom = 141.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "3:00
+"
+label_settings = SubResource("LabelSettings_k0juu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayersPanel" type="Panel" parent="UI"]
+offset_left = 431.0
+offset_top = 101.0
+offset_right = 730.0
+offset_bottom = 574.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="UI/PlayersPanel"]
+layout_mode = 2
+offset_right = 299.0
+offset_bottom = 42.0
+text = "Gracze:"
+label_settings = SubResource("LabelSettings_71j4m")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PlayersPanel"]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 299.0
+offset_bottom = 471.0
+
+[node name="SprintBar" type="ProgressBar" parent="UI"]
+offset_left = 488.0
+offset_top = 598.0
+offset_right = 687.0
+offset_bottom = 636.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+tooltip_text = "
+"
+value = 100.0
+show_percentage = false
+
+[node name="SprintLabel" type="Label" parent="UI"]
+offset_left = 494.0
+offset_top = 607.0
+offset_right = 682.0
+offset_bottom = 630.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+horizontal_alignment = 1

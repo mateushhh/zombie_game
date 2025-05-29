@@ -209,6 +209,10 @@ class GameServer:
         else:
             logger.warning(f"Próba usunięcia gracza {player_id}, który nie istnieje.")
 
+    def reset_players_ready(self):
+        for pid in self.players_nicknames_by_id:
+            self.players_nicknames_by_id[pid]["ready"] = False
+
     def send_lobby_update(self):
         all_players_info = []
         for pid, pdata in self.players_nicknames_by_id.items():
@@ -367,13 +371,16 @@ class GameServer:
         if game_over_msg_payload:
             logger.info(f"Koniec Gry: {game_over_msg_payload}")
             self._broadcast_message(f"{config.MSG_PREFIX_GAME_OVER};{game_over_msg_payload}")
-            self._reset_game(game_over_msg_payload)
+            #self._reset_game(game_over_msg_payload)
+            self._reset_to_lobby_state(inform_clients=False)
             return True
         return False
 
     def _reset_to_lobby_state(self, inform_clients=True):
         self._game_started = False
         self._game_loop_active = False
+
+        self.reset_players_ready()
 
         self._lobby_addrs.clear()
         for addr, player_obj in self.players_by_addr.items():
