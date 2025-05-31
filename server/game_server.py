@@ -317,10 +317,20 @@ class GameServer:
 
         logger.info("Game starts now !")
         self._game_loop_active = True
+
+        threading.Thread(target=self._game_timer, daemon=True, name="GameTimerThread").start()
+
         if self._game_loop_thread is None or not self._game_loop_thread.is_alive():
             self._game_loop_thread = threading.Thread(target=self._game_update_loop, name="GameLoopThread",
                                                       daemon=True)
             self._game_loop_thread.start()
+
+    def _game_timer(self):
+        time.sleep(config.GAME_DURATION_SECONDS)
+        if self._game_started and self.running:
+            logger.info("Czas gry upłynął. Kończenie gry.")
+            self._broadcast_message(f"{config.MSG_PREFIX_GAME_OVER}")
+            self._reset_to_lobby_state(inform_clients=False)
 
     def _game_update_loop(self):
         logger.info("Pętla aktualizacji gry uruchomiona.")
