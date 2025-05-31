@@ -123,7 +123,7 @@ class GameServer:
         if self.sock:
             self.sock.sendto(join_confirm_msg_self.encode(), addr)
             broadcast_msg = config.MSG_PREFIX_LOBBY + ";" + ";".join(all_players_info)
-            logger.info(f"Wysyłanie broadcastu do innych graczy: {broadcast_msg}")
+            #logger.info(f"Wysyłanie broadcastu do innych graczy: {broadcast_msg}")
             for other_addr in self.players_by_addr:
                 if other_addr != addr:
                     self.sock.sendto(broadcast_msg.encode(), other_addr)
@@ -162,8 +162,7 @@ class GameServer:
             victim_id = int(parts[2])
 
             if reported_attacker_id != attacker_player.id:
-                logger.warning(
-                    f"Wiadomość o ataku od {sender_addr} z niezgodnym ID atakującego ({reported_attacker_id} vs {attacker_player.id})")
+                logger.warning(f"Wiadomość o ataku od {sender_addr} z niezgodnym ID atakującego ({reported_attacker_id} vs {attacker_player.id})")
                 return
 
             victim_player = self.players_by_id.get(victim_id)
@@ -196,14 +195,14 @@ class GameServer:
             del self.players_nicknames_by_id[player_id]
             logger.info(f"Gracz {player_id} ({nickname}) opuścił lobby.")
 
-            # Usuń adres z mapy adresów
-            addr_to_remove = None
-            for addr, pid in self.players_by_addr.items():
-                if pid == player_id:
-                    addr_to_remove = addr
-                    break
-            if addr_to_remove:
+            addr_to_remove = next((addr for addr, player in self.players_by_addr.items() if player.id == player_id),
+                                  None)
+
+            if addr_to_remove is not None:
                 del self.players_by_addr[addr_to_remove]
+                logger.info(f"Usunięto adres {addr_to_remove} z players_by_addr")
+            else:
+                logger.warning(f"Nie znaleziono adresu dla player_id {player_id} w players_by_addr")
 
             self.send_lobby_update()
         else:

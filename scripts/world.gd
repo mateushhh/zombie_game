@@ -16,6 +16,8 @@ var PlayerScene: PackedScene
 @onready var sprint_label = $UI/SprintLabel
 
 var players := {}
+const HUMAN = 0
+const ZOMBIE = 1
 
 func _ready():
 	player.player_id = Global.player_id
@@ -38,7 +40,7 @@ func send_data_to_server():
 		Global.udp.put_packet(data)
 
 func _on_player_collided(victim_id: int) -> void:
-	print("Collision detected with player:", victim_id)
+	#print("Collision detected with player:", victim_id)
 	send_collision_to_server(victim_id)
 	
 func reset_players_ready() -> void:
@@ -49,7 +51,7 @@ func get_data_from_server():
 	var packet = Global.udp.get_packet()
 	var received = packet.get_string_from_utf8()
 	received = received.split(";") 
-	print("Received from server: ", received)
+	#print("Received from server: ", received)
 	
 	# type_of_data
 	# [P] position & role -> data_type;id;role;pos_x;pos_y
@@ -89,6 +91,9 @@ func get_data_from_server():
 				players[current_id] = new_player
 		
 	elif type_of_data == "G":
+		for id in players:
+			players[id].set_role(ZOMBIE)
+			
 		game_running = false
 		gameover_panel.show()
 		reset_players_ready()
@@ -97,7 +102,7 @@ func get_data_from_server():
 		print("GAME OVER!")
 		get_tree().change_scene_to_file("res://scenes/lobby.tscn")
 		
-	elif(type_of_data == "D"): #TODO player disconnect 
+	elif(type_of_data == "D"):
 		pass
 		
 func update_players_panel():

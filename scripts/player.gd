@@ -10,9 +10,11 @@ var collision_box = $CollisionShape2D
 
 signal collided_with_player(victim_id: int)
 
-enum role {HUMAN, ZOMBIE}
+const HUMAN = 0
+const ZOMBIE = 1
+
 @export
-var current_role: role = role.HUMAN
+var current_role: int = HUMAN
 @export
 var playable: bool = false
 @export
@@ -32,9 +34,9 @@ func set_role(r):
 	set_sprite()
 
 func set_sprite() -> void:
-	if current_role == role.HUMAN:
+	if current_role == HUMAN:
 		sprite.region_rect = Rect2(Vector2(0,0),Vector2(16,16))
-	elif current_role == role.ZOMBIE:
+	elif current_role == ZOMBIE:
 		sprite.region_rect = Rect2(Vector2(32,16),Vector2(16,16))
 
 func _ready() -> void:
@@ -64,12 +66,12 @@ func _process(delta: float) -> void:
 			print("Collision with other Player")
 			var collider_instance : Player = instance_from_id(collider.get_instance_id())
 			# get infected
-			if collider_instance.current_role == role.ZOMBIE:
-				current_role = role.ZOMBIE
+			if collider_instance.current_role == ZOMBIE:
+				current_role = ZOMBIE
 			# infect other player or nothing happens
-			elif collider_instance.current_role == role.HUMAN:
-				if current_role == role.ZOMBIE:
-					collider_instance.current_role = role.ZOMBIE
+			elif collider_instance.current_role == HUMAN:
+				if current_role == ZOMBIE:
+					collider_instance.current_role = ZOMBIE
 			set_sprite()
 			collider_instance.set_sprite()
 			emit_signal("collided_with_player", collider_instance.player_id)
