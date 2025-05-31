@@ -11,3 +11,6 @@ var x: int = 0
 var y: int = 0
 var players_nicknames_by_id = {}
 var connected := false
+
+const GAME_DURATION_SECONDS = 180
+var time_left = GAME_DURATION_SECONDS

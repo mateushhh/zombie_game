@@ -12,14 +12,17 @@ var PlayerScene: PackedScene
 @onready var players_panel: Control = $UI/PlayersPanel
 @onready var players_box: VBoxContainer = $UI/PlayersPanel/VBoxContainer
 
-@onready var sprint_bar = $UI/SprintBar
-@onready var sprint_label = $UI/SprintLabel
+@onready var sprint_bar: ProgressBar = $UI/SprintBar
+@onready var sprint_label: Label = $UI/SprintLabel
+
+@onready var time_label: Label = $UI/TimeLabel
 
 var players := {}
 const HUMAN = 0
 const ZOMBIE = 1
 
 func _ready():
+	Global.time_left = Global.GAME_DURATION_SECONDS
 	player.player_id = Global.player_id
 	player.position.x = Global.x
 	player.position.y = Global.y
@@ -123,6 +126,21 @@ func send_collision_to_server(target_player_id: int):
 	var msg = "C;%d;%d" % [player.player_id, target_player_id]
 	send_message(msg)
 	
+func update_timer(delta: float) -> void:
+	Global.time_left -= delta
+	
+	if Global.time_left < 0:
+		Global.time_left = 0
+		
+	var time = ""
+	var minutes = floor(Global.time_left / 60)
+	var seconds = floor(fmod(Global.time_left, 60))
+	
+	var time_string = "%02d:%02d" % [minutes, seconds]
+	
+	time_label.text = time_string
+	pass
+	
 func _input(event):
 	if event is InputEventKey and event.keycode == KEY_TAB:
 		if event.pressed:
@@ -138,9 +156,10 @@ func _process(delta):
 			sprint_label.text = "Sprint gotowy"
 		else:
 			sprint_label.text = ""
+		update_timer(delta)
 		
 	if Global.connected:
 		while Global.udp.get_available_packet_count() > 0:
 			get_data_from_server()
 		if game_running:
-			send_data_to_server() #TODO
+			send_data_to_server() 
