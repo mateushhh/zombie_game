@@ -171,8 +171,10 @@ class GameServer:
                 logger.debug(f"Atakujący {attacker_player.id} próbował zaatakować nieistniejącą ofiarę {victim_id}")
                 return
 
-            if attacker_player.role == config.ROLE_ZOMBIE and victim_player.role == config.ROLE_HUMAN:
+            if attacker_player.role != config.ROLE_ZOMBIE:
                 victim_player.role = config.ROLE_ZOMBIE
+                attacker_player.role = config.ROLE_ZOMBIE
+                
                 logger.info(f"Gracz {victim_player.id} zainfekowany przez Gracza {attacker_player.id}.")
                 self._broadcast_message(
                     f"{config.MSG_CLIENT_COLLISION};{victim_player.id};{config.ROLE_ZOMBIE}")

@@ -55,12 +55,7 @@ func get_data_from_server():
 	var received = packet.get_string_from_utf8()
 	received = received.split(";") 
 	#print("Received from server: ", received)
-	
-	# type_of_data
-	# [P] position & role -> data_type;id;role;pos_x;pos_y
-	# [J] player joined -> data_type;id
-	# [D] player disconnected -> data_type;id
-	
+
 	var type_of_data = String(received[0]) #idk dlaczego nie mogę po prostu użyć chara
 	
 	if type_of_data == "P":
