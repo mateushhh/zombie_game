@@ -119,6 +119,11 @@ func update_players_panel():
 		
 		var label = Label.new()
 		label.text = "ID: %d - %s" % [id, nick]
+		label.set("theme_override_colors/font_color", Color("#ff4416"))  # kolor
+
+		var custom_font = preload("res://assets/fonts/Creepster-Regular.ttf")
+		label.set("theme_override_fonts/font", custom_font)  # czcionka
+		label.set("theme_override_font_sizes/font_size", 24)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		players_box.add_child(label)
 

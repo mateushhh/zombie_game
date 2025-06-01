@@ -4,4 +4,4 @@ res://scenes/player.tscn
 res://scenes/mainMenu.tscn
 res://scenes/lobby.tscn
 res://scripts/lobby.gd
-res://scripts/MainMenu.gd
+res://scripts/world.gd

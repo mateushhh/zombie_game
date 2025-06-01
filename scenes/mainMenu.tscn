@@ -1,13 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://bypya4yktiad5"]
+[gd_scene load_steps=9 format=3 uid="uid://bypya4yktiad5"]
 
 [ext_resource type="Script" uid="uid://ciqwtr3ohurkl" path="res://scripts/MainMenu.gd" id="1_qkhwq"]
 [ext_resource type="Texture2D" uid="uid://l5lbjg0dfoj7" path="res://assets/tło.png" id="2_48ign"]
 [ext_resource type="Texture2D" uid="uid://dys0jroso33jj" path="res://assets/logoZombie.png" id="3_l7wge"]
+[ext_resource type="FontFile" uid="uid://dfipiwf575h5t" path="res://assets/fonts/Creepster-Regular.ttf" id="4_l7wge"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_48ign"]
+font = ExtResource("4_l7wge")
+font_size = 25
 font_color = Color(0.245959, 0.717777, 0.419745, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_l7wge"]
+font = ExtResource("4_l7wge")
+font_size = 25
 font_color = Color(0.247059, 0.717647, 0.419608, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48ign"]
@@ -55,28 +60,34 @@ layout_mode = 2
 
 [node name="NickLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Podaj nick:"
+text = "PODAJ NICK:"
 label_settings = SubResource("LabelSettings_48ign")
 
 [node name="NickInput" type="LineEdit" parent="VBoxContainer"]
 self_modulate = Color(1, 0.266667, 0.0862745, 1)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_l7wge")
+theme_override_font_sizes/font_size = 22
 placeholder_text = "nick"
 
 [node name="IPLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Podaj IP:"
+text = "PODAJ IP:"
 label_settings = SubResource("LabelSettings_l7wge")
 
 [node name="IPInput" type="LineEdit" parent="VBoxContainer"]
 modulate = Color(1, 0.266667, 0.0862745, 1)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_l7wge")
+theme_override_font_sizes/font_size = 22
 placeholder_text = "ip"
 
 [node name="JoinButton" type="Button" parent="VBoxContainer"]
 self_modulate = Color(0.247059, 0.717647, 0.419608, 1)
 layout_mode = 2
-text = "Zatwierdz"
+theme_override_fonts/font = ExtResource("4_l7wge")
+theme_override_font_sizes/font_size = 25
+text = "ZATWIERDZ"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -86,13 +97,17 @@ alignment = 1
 self_modulate = Color(0.247059, 0.717647, 0.419608, 1)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Sterowanie"
+theme_override_fonts/font = ExtResource("4_l7wge")
+theme_override_font_sizes/font_size = 25
+text = "STEROWANIE"
 
 [node name="QuitButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 self_modulate = Color(0.247059, 0.717647, 0.419608, 1)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Wyjdz"
+theme_override_fonts/font = ExtResource("4_l7wge")
+theme_override_font_sizes/font_size = 25
+text = "WYJDZ"
 
 [node name="ConnectingPanel" type="Panel" parent="."]
 visible = false

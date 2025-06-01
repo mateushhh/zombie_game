@@ -8,12 +8,9 @@ var connected := true  # już połączony, po przejściu z connect.gd
 var is_ready := false
 
 func _ready():
-	# ustaw dest address (tak samo jak w connect.gd)
-	Global.udp.set_dest_address(Global.ip, 2137)
 	ready_button.connect("pressed", Callable(self, "_on_ready_button_pressed"))
 	back_button.pressed.connect(_back_pressed)
 	update_player_list()
-	
 	
 func update_player_list():
 	# wyczyść listę
@@ -28,7 +25,13 @@ func update_player_list():
 		
 		var label = Label.new()
 		label.text = "%s (ID: %s) %s" % [p_nick, str(p_id), ready_status]
-		label.set("theme_override_colors/font_color", Color("#ff4416"))
+		label.set("theme_override_colors/font_color", Color("#ff4416"))  
+
+		# Załaduj czcionkę (jeśli jeszcze nie)
+		var custom_font = preload("res://assets/fonts/Creepster-Regular.ttf")
+		label.set("theme_override_fonts/font", custom_font)  
+
+		label.set("theme_override_font_sizes/font_size", 23)
 		
 		player_list.add_child(label)
 

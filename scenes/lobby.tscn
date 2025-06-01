@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://mpjegv011cia"]
+[gd_scene load_steps=5 format=3 uid="uid://mpjegv011cia"]
 
 [ext_resource type="Script" uid="uid://div47xglobfni" path="res://scripts/lobby.gd" id="1_o1atq"]
 [ext_resource type="Texture2D" uid="uid://l5lbjg0dfoj7" path="res://assets/tło.png" id="2_5gu6x"]
+[ext_resource type="FontFile" uid="uid://dfipiwf575h5t" path="res://assets/fonts/Creepster-Regular.ttf" id="3_q60fs"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5gu6x"]
-font_size = 22
+font = ExtResource("3_q60fs")
+font_size = 35
 font_color = Color(0.247059, 0.717647, 0.419608, 1)
 
 [node name="Control" type="Control"]
@@ -47,9 +49,13 @@ layout_mode = 2
 [node name="ReadyButton" type="Button" parent="VBoxContainer"]
 self_modulate = Color(0.247059, 0.717647, 0.419608, 1)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_q60fs")
+theme_override_font_sizes/font_size = 25
 text = "Gotowy"
 
 [node name="BackButton" type="Button" parent="VBoxContainer"]
 self_modulate = Color(0.247059, 0.717647, 0.419608, 1)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_q60fs")
+theme_override_font_sizes/font_size = 25
 text = "Powrót do menu"

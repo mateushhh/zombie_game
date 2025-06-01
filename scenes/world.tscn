@@ -1,18 +1,22 @@
-[gd_scene load_steps=7 format=4 uid="uid://eky1am70f5x8"]
+[gd_scene load_steps=8 format=4 uid="uid://eky1am70f5x8"]
 
 [ext_resource type="Script" uid="uid://dieb6eylekc5s" path="res://scripts/world.gd" id="1_4wyf3"]
 [ext_resource type="TileSet" uid="uid://c6c63xlmwsspc" path="res://assets/world.tres" id="2_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://cft87x1jw0ndo" path="res://scenes/player.tscn" id="2_rwgxs"]
+[ext_resource type="FontFile" uid="uid://dfipiwf575h5t" path="res://assets/fonts/Creepster-Regular.ttf" id="5_71j4m"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4wyf3"]
 font_size = 50
 font_color = Color(1, 0.266667, 0.0862745, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_k0juu"]
-font_size = 40
+font = ExtResource("5_71j4m")
+font_size = 50
 
 [sub_resource type="LabelSettings" id="LabelSettings_71j4m"]
-font_size = 30
+font = ExtResource("5_71j4m")
+font_size = 40
+font_color = Color(1, 0.266667, 0.0862745, 1)
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_4wyf3")
@@ -69,8 +73,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayersPanel" type="Panel" parent="UI"]
+modulate = Color(0.733581, 0.133007, 0.160664, 1)
 offset_left = 431.0
-offset_top = 101.0
+offset_top = 112.0
 offset_right = 730.0
 offset_bottom = 574.0
 size_flags_horizontal = 3
@@ -80,18 +85,20 @@ size_flags_vertical = 3
 layout_mode = 2
 offset_right = 299.0
 offset_bottom = 42.0
-text = "Gracze:"
+text = "GRACZE:"
 label_settings = SubResource("LabelSettings_71j4m")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/PlayersPanel"]
 layout_mode = 0
-offset_top = 55.0
-offset_right = 299.0
+offset_left = 1.0
+offset_top = 68.0
+offset_right = 301.0
 offset_bottom = 471.0
 
 [node name="SprintBar" type="ProgressBar" parent="UI"]
+self_modulate = Color(0.0731312, 0.257394, 0.139276, 1)
 offset_left = 488.0
 offset_top = 598.0
 offset_right = 687.0
@@ -105,9 +112,13 @@ show_percentage = false
 
 [node name="SprintLabel" type="Label" parent="UI"]
 offset_left = 494.0
-offset_top = 607.0
+offset_top = 604.0
 offset_right = 682.0
 offset_bottom = 630.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.247059, 0.717647, 0.419608, 1)
+theme_override_fonts/font = ExtResource("5_71j4m")
+theme_override_font_sizes/font_size = 25
+text = "Sprint gotowy"
 horizontal_alignment = 1
