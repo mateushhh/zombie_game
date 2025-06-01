@@ -94,6 +94,11 @@ func get_data_from_server():
 				players[current_id] = new_player
 		
 	elif type_of_data == "G":
+		if who_won() == ZOMBIE:
+			gameover_label.text = "GAME OVER\nZOMBIES WON"
+		else:
+			gameover_label.text = "GAME OVER\nHUMANS WON"
+			
 		for id in players:
 			players[id].set_role(ZOMBIE)
 			
@@ -107,7 +112,13 @@ func get_data_from_server():
 		
 	elif(type_of_data == "D"):
 		pass
-		
+
+func who_won():
+	for id in players:
+		if players[id].current_role == HUMAN:
+			return HUMAN
+	return ZOMBIE
+
 func update_players_panel():
 	for child in players_box.get_children():
 		players_box.remove_child(child)
@@ -119,11 +130,6 @@ func update_players_panel():
 		
 		var label = Label.new()
 		label.text = "ID: %d - %s" % [id, nick]
-		label.set("theme_override_colors/font_color", Color("#ff4416"))  # kolor
-
-		var custom_font = preload("res://assets/fonts/Creepster-Regular.ttf")
-		label.set("theme_override_fonts/font", custom_font)  # czcionka
-		label.set("theme_override_font_sizes/font_size", 24)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		players_box.add_child(label)
 
