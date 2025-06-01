@@ -10,8 +10,8 @@ extends Node
 @onready var connecting_panel: Control = $ConnectingPanel
 @onready var connecting_label: Label = $ConnectingPanel/ConnectingLabel
 
-
-
+@onready var controls_panel: Control = $ControlsPanel
+@onready var backMenuButton: Button = $ControlsPanel/ControlsBox/BackMenuButton
 const CONNECTION_TIMEOUT := 5.0
 var connected := false
 
@@ -19,10 +19,11 @@ func _ready():
 	join_button.pressed.connect(_on_join_pressed)
 	controls_button.pressed.connect(_on_controls_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
+	backMenuButton.pressed.connect(_on_menu_pressed)
 	connecting_panel.hide()  # Upewnij się że panel jest ukryty na starcie
 	ip_input.text = "127.0.0.1" #tymczasowo do testow
 	nick_input.text = "gracz"
-	
+	controls_panel.hide()
 
 func _on_join_pressed():
 	var nick = nick_input.text.strip_edges()
@@ -134,7 +135,11 @@ func show_error(message: String):
 	join_button.disabled = false
 
 func _on_controls_pressed():
-	OS.alert("Sterowanie:\n- WSAD - ruch\n- Spacja - skok\n- Enter - czat", "Sterowanie")
+	controls_panel.show()
+
 
 func _on_quit_pressed():
 	get_tree().quit()
+	
+func _on_menu_pressed():
+	controls_panel.hide()

@@ -20,17 +20,16 @@ func update_player_list():
 	for child in player_list.get_children():
 		child.queue_free()
 		
-	print("Aktualna lista graczy:")
 	for p_id in Global.players_nicknames_by_id.keys():
 		var player_data = Global.players_nicknames_by_id[p_id]
 		var p_nick = player_data["nickname"]
 		var ready = player_data["ready"]
 		var ready_status = "✅" if ready else "❌"
 		
-		print("- %s (ID: %s, Gotowy: %s)" % [p_nick, str(p_id), ready_status])
-		
 		var label = Label.new()
 		label.text = "%s (ID: %s) %s" % [p_nick, str(p_id), ready_status]
+		label.set("theme_override_colors/font_color", Color("#ff4416"))
+		
 		player_list.add_child(label)
 
 func _on_ready_button_pressed():

@@ -6,7 +6,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_4wyf3"]
 font_size = 50
-font_color = Color(1, 1, 0.0666667, 1)
+font_color = Color(1, 0.266667, 0.0862745, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_k0juu"]
 font_size = 40
