@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://bypya4yktiad5"]
 
-[ext_resource type="Script" path="res://scripts/MainMenu.gd" id="1_qkhwq"]
+[ext_resource type="Script" uid="uid://ciqwtr3ohurkl" path="res://scripts/MainMenu.gd" id="1_qkhwq"]
 [ext_resource type="Texture2D" uid="uid://l5lbjg0dfoj7" path="res://assets/tło.png" id="2_48ign"]
 [ext_resource type="Texture2D" uid="uid://dys0jroso33jj" path="res://assets/logoZombie.png" id="3_l7wge"]
 [ext_resource type="FontFile" uid="uid://dfipiwf575h5t" path="res://assets/fonts/Creepster-Regular.ttf" id="4_l7wge"]
@@ -152,7 +152,8 @@ alignment = 1
 [node name="ControlsLabel" type="Label" parent="ControlsPanel/ControlsBox"]
 layout_mode = 2
 text = "RUCH: W / A / S / D
-SPRINT: SPACJA"
+SPRINT: SPACJA
+TABELA GRACZY: TAB"
 label_settings = SubResource("LabelSettings_7nrmo")
 horizontal_alignment = 1
 
@@ -160,4 +161,5 @@ horizontal_alignment = 1
 self_modulate = Color(0.247059, 0.717647, 0.419608, 1)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_l7wge")
+theme_override_font_sizes/font_size = 25
 text = "Wróć do menu"
