@@ -18,6 +18,7 @@ font_color = Color(0.247059, 0.717647, 0.419608, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48ign"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7nrmo"]
+font = ExtResource("4_l7wge")
 font_size = 40
 font_color = Color(1, 0.266667, 0.0862745, 1)
 
@@ -128,7 +129,6 @@ offset_right = 761.0
 offset_bottom = 355.0
 
 [node name="ControlsPanel" type="Panel" parent="."]
-visible = false
 modulate = Color(1, 1, 1, 0.905882)
 layout_mode = 1
 anchors_preset = 15
@@ -143,6 +143,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 314.0
+offset_right = -334.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -157,4 +159,5 @@ horizontal_alignment = 1
 [node name="BackMenuButton" type="Button" parent="ControlsPanel/ControlsBox"]
 self_modulate = Color(0.247059, 0.717647, 0.419608, 1)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_l7wge")
 text = "Wróć do menu"
