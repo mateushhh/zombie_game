@@ -50,8 +50,7 @@ func _on_join_pressed():
 	connected = true
 	Global.nick = nick
 	send_message("/join;"+Global.nick)
-	
-	# Obsługa odpowiedzi serwera
+
 	var joined_successfully := await wait_for_connection_or_timeout(CONNECTION_TIMEOUT)
 	
 	if joined_successfully:
